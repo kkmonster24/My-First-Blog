@@ -1,1 +1,18 @@
-<h1>This is Home Page</h1>
+{%extends "base.html"%}
+{%block content%}
+	{% if messages %}
+	<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}><strong>{{ message }}</strong></li>
+    {% endfor %}
+	</ul>
+	{% endif %}
+
+	{%for obj in objects%}
+	<ul>
+		<li><a href='/{{obj.id}}'>{{obj.title}}</a></li><br>
+		
+		Created on 	: {{obj.timestamp}}
+	</ul>
+	{%endfor%}
+{%endblock%}
