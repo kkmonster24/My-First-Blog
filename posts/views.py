@@ -2,12 +2,16 @@ from django.shortcuts import render, get_object_or_404,redirect
 from .models import Post
 from .forms import PostForm
 from django.contrib import messages
-
+from django.core.paginator import Paginator
 
 def home(request):
-	obj = Post.objects.all()
+	obj_list = Post.objects.all().order_by("-timestamp")
+	paginator = Paginator(obj_list, 10) # Show 25 contacts per page
+
+	page = request.GET.get('page')
+	objects = paginator.get_page(page)
 	context={
-		"objects" : obj
+		"objects" : objects
 	}
 	return render(request,"home.html",context)
 # Create your views here.
@@ -24,6 +28,8 @@ def post_create(request):
 	return render(request,"create.html",context)
 
 def post_list(request,id):
+
+
 	instance=get_object_or_404(Post,id=id)
 	context={
 		"instance" : instance
